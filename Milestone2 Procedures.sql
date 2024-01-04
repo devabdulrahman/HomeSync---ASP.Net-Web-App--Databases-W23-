@@ -265,4 +265,87 @@ GO
 
 --2-17 ) RecieveMoney : Receive a transaction
 
+CREATE PROCEDURE ReceiveMoney @sender_id INT , @type VARCHAR(30), @amount DECIMAL(13,2), @status VARCHAR(10), @date DATETIME
+AS
+BEGIN
+	INSERT INTO Finance (user_id,type,amount,status,date) 
+	VALUES (@sender_id,@type,@amount,@status,@date)
+END
+
+
+--------------------------------------------
+
+--2-18 ) PlanPayment : Crate a payment on a specific date
+
+CREATE PROCEDURE PlanPayment @sender_id INT ,@receiver_id INT, @type VARCHAR(30), @amount DECIMAL(13,2), @status VARCHAR(10), @deadline DATETIME
+AS
+BEGIN
+	INSERT INTO Finance (user_id,type,amount,status,receiver_id,deadline) 
+	VALUES (@sender_id,@type,@amount,@status,@receiver_id,@deadline)
+END
+
+--------------------------------------------
+
+--2-19 ) SendMessage : Send message to user
+
+CREATE PROCEDURE SendMessage @sender_id INT ,@receiver_id INT, @title VARCHAR(30),@content VARCHAR(200), @timesent DATETIME ,@timereceived DATETIME
+AS
+BEGIN
+	INSERT INTO Communication 
+	VALUES (@sender_id,@receiver_id ,@content,@timesent,@timereceived,NULL,@title)
+END
+
+-------------------------------------------
+
+--2-20 ) NoteTitle : Change note title for all notes user created
+
+CREATE PROCEDURE NoteTitle @user_id INT, @note_title VARCHAR(50)
+AS
+BEGIN
+	UPDATE Notes SET title = @note_title WHERE user_id = @user_id	
+END
+
+-------------------------------------------
+
+--2-21 ) ShowMessages : Show all messages received from a specific user
+
+CREATE PROCEDURE ShowMessages @user_id INT, @sender_id INT
+AS
+BEGIN
+	SELECT * FROM Communication WHERE receiver_id = @user_id AND sender_id = @sender_id	
+END
+
+-------------------------------------------
+
+--3-1 ) ViewUsers : See details of all users and filter them by @user_type
+
+CREATE PROCEDURE ViewUsers @user_type VARCHAR(20)
+AS
+BEGIN
+	SELECT * FROM Users WHERE  type = @user_type 
+END
+
+-------------------------------------------
+
+--3-2 ) RemoveEvent : Remove an event from the system
+
+CREATE PROCEDURE RemoveEvent @event_id INT , @user_id INT
+AS
+BEGIN
+	DELETE FROM Calendar WHERE event_id = @event_id AND user_assigned_to = @user_id 
+END
+
+--------------------------------------------
+
+--3-3 ) CreateSchedule : Create schedule for the rooms 
+
+CREATE PROCEDURE CreateSchedule @creator_id INT, @room_id INT, @start_time DATETIME, @end_time DATETIME, @action VARCHAR(20)
+AS
+BEGIN
+	INSERT INTO RoomSchedule VALUES (@creator_id,@action,@room_id,@start_time,@end_time)
+END
+
+-------------------------------------------
+
+--3-4 )
 

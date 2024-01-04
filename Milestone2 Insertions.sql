@@ -41,3 +41,30 @@ INSERT INTO Calendar VALUES (2,8,'meeting','New Project meeting','Meeting Room 1
 INSERT INTO Task VALUES ('data entry','11-14-2023','11-16-2023','work',4,'pending',NULL,1);
 INSERT INTO Task VALUES ('start campaign','09-21-2023','10-02-2023','work',2,'in progress',NULL,3);
 INSERT INTO Task VALUES ('paint rooms','12-19-2023','12-24-2023','diy',5,'pending',NULL,1);
+
+-- Insert batch #1
+INSERT INTO Notes (user_id, content, creation_date, title) VALUES
+( 10, 'Discuss plans for the team vacation.', '2024-01-04 05:49:28.210', 'Vacation Planning'),
+( 9, 'Set personal goals for the month.', '2024-01-04 05:49:28.210', 'Personal Goals'),
+( 8, 'Analyze feedback from recent customer interactions.', '2024-01-04 05:49:28.210', 'Customer Feedback'),
+( 7, 'Check and review the recent code changes.', '2024-01-04 05:49:28.210', 'Code Review'),
+( 6, 'Prepare materials for the upcoming training session.', '2024-01-04 05:49:28.210', 'Training Session'),
+( 5, 'Overview of project milestones.', '2024-01-04 05:49:28.210', 'Project Update'),
+( 4, 'Discuss marketing strategies for the new product.', '2024-01-04 05:49:28.210', 'Product Launch'),
+( 3, 'Complete the task by EOD.', '2024-01-04 05:49:28.210', 'Daily Reminder'),
+( 3, 'lorem ipsum dolor set amit', '2018-03-25 00:00:00.000', 'study physics'),
+( 2, 'Plan team-building activities.', '2024-01-04 05:49:28.210', 'Team Building'),
+( 1, 'Provide updates on the ongoing project.', '2024-01-04 05:49:28.210', 'Project Status'),
+( 1, 'Discussion about upcoming projects.', '2024-01-04 05:49:28.210', 'Meeting Notes');
+
+INSERT INTO Communication VALUES
+(3, 6, 'Hey Alice, hows it going?', '2024-02-18 10:30:15.000', '2024-02-18 10:31:20.000', NULL, 'Casual Greeting'),
+(7, 4, 'Hi Bob, any updates on the project?', '2024-02-18 12:45:30.000', '2024-02-18 12:46:22.000', NULL, 'Project Inquiry'),
+(1, 9, 'Good morning Emily! Ready for the meeting?', '2024-02-18 08:00:00.000', '2024-02-18 08:01:05.000', NULL, 'Meeting Reminder'),
+(2, 8, 'Hello David, just wanted to say hi!', '2024-02-18 15:20:45.000', '2024-02-18 15:21:30.000', NULL, 'Friendly Message'),
+(5, 10, 'Greetings Samantha! Hows your day so far?', '2024-02-18 18:12:10.000', '2024-02-18 18:13:05.000', NULL, 'Daily Check-in'),
+(6, 1, 'Hey Michael, got any weekend plans?', '2024-02-18 09:40:00.000', '2024-02-18 09:41:15.000', NULL, 'Weekend Discussion'),
+(4, 3, 'Hi Olivia, quick question about the upcoming event.', '2024-02-18 14:05:20.000', '2024-02-18 14:06:10.000', NULL, 'Event Inquiry'),
+(8, 5, 'Morning James! Dont forget the deadline is approaching.', '2024-02-18 11:55:00.000', '2024-02-18 11:56:30.000', NULL, 'Deadline Reminder'),
+(10, 7, 'Hello Chloe, need your input on the latest report.', '2024-02-18 16:30:45.000', '2024-02-18 16:31:40.000', NULL, 'Report Feedback'),
+(9, 2, 'Hi John, received your message. Lets catch up later.', '2024-02-18 22:10:08.000', '2024-02-18 22:10:10.000', NULL, 'Acknowledgment');

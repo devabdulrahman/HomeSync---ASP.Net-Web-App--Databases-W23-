@@ -106,22 +106,19 @@ CREATE TABLE User_trip (
 );
 
 CREATE TABLE Finance (
-	payment_id INT PRIMARY KEY ,
+	payment_id INT IDENTITY(1,1) PRIMARY KEY ,
 	user_id INT NOT NULL,
 	type VARCHAR(30) NOT NULL,
 	amount DECIMAL(13,2) NOT NULL,
 	currency VARCHAR(10) ,
 	method VARCHAR(15) ,
 	status VARCHAR(15) NOT NULL,
-	date DATETIME NOT NULL,
-	receipt_no INT ,
-	deadline DATETIME NOT NULL,
+	date DATETIME ,
+	receiver_id INT ,
+	deadline DATETIME ,
 	penalty DECIMAL(13,2) ,
-	sender_id INT ,
-	reciever_id INT,
 	FOREIGN KEY (user_id) REFERENCES Users(id),
-	FOREIGN KEY (sender_id) REFERENCES Users(id),
-	FOREIGN KEY (reciever_id) REFERENCES Users(id)
+	FOREIGN KEY (receiver_id) REFERENCES Users(id)
 );
 
 CREATE TABLE Health (
