@@ -111,13 +111,17 @@ CREATE TABLE Finance (
 	type VARCHAR(30) NOT NULL,
 	amount DECIMAL(13,2) NOT NULL,
 	currency VARCHAR(10) ,
-	method VARCHAR(15) NOT NULL,
+	method VARCHAR(15) ,
 	status VARCHAR(15) NOT NULL,
 	date DATETIME NOT NULL,
-	receipt_no INT NOT NULL,
+	receipt_no INT ,
 	deadline DATETIME NOT NULL,
 	penalty DECIMAL(13,2) ,
+	sender_id INT ,
+	reciever_id INT,
 	FOREIGN KEY (user_id) REFERENCES Users(id),
+	FOREIGN KEY (sender_id) REFERENCES Users(id),
+	FOREIGN KEY (reciever_id) REFERENCES Users(id)
 );
 
 CREATE TABLE Health (
