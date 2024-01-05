@@ -200,12 +200,12 @@ CREATE TABLE Recommendation (
 	user_id INT NOT NULL,
 	category VARCHAR(15),
 	preference_no INT ,
-	content VARCHAR(100) NOT NULL,
+	content VARCHAR(100) ,
 	FOREIGN KEY (user_id,preference_no) REFERENCES Preferences(user_id,preference_no)
 );
 
 CREATE TABLE Inventory (
-	supply_id INT IDENTITY(1,1) PRIMARY KEY,
+	supply_id INT PRIMARY KEY,
 	name VARCHAR(20) NOT NULL,
 	quantity INT,
 	expiry_date DATETIME ,

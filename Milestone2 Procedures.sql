@@ -347,5 +347,70 @@ END
 
 -------------------------------------------
 
---3-4 )
+--3-4 ) GuestRemove : Remove a guest from the system
 
+CREATE PROCEDURE GuestRemove @guest_id INT, @admin_id INT , @number_of_allowed_guests INT OUTPUT
+AS
+BEGIN
+	DECLARE @n TABLE (updatedval INT);
+	BEGIN TRANSACTION;
+	BEGIN TRY
+		DELETE FROM Guest WHERE guest_id = @guest_id AND guest_of = @admin_id
+		UPDATE Admin SET no_of_guests_allowed = no_of_guests_allowed-1 
+		OUTPUT INSERTED.no_of_guests_allowed INTO @n WHERE admin_id = @admin_id
+		SELECT @number_of_allowed_guests = updatedval FROM @n 
+		COMMIT;
+	END TRY
+	BEGIN CATCH
+		ROLLBACK;
+		PRINT ERROR_MESSAGE()
+	END CATCH
+END
+
+--------------------------------------------
+
+--3-5 ) RecommendTD :  Recommend travel destinations for guests under certain age
+
+
+
+--------------------------------------------
+
+
+--3-6 ) Survailance : Access cameras in the house
+
+
+
+---------------------------------------------
+
+--3-7 ) RoomAvailability : Change status of a room
+
+CREATE PROCEDURE RoomAvailability @location INT, @status VARCHAR(40) 
+AS
+BEGIN
+	UPDATE Room SET status = @status WHERE room_id = @location
+END
+
+---------------------------------------------
+
+--3-8 ) AddInventory : Create an inventory gor a specific item
+
+CREATE PROCEDURE AddInventory @item_id INT ,@name VARCHAR(30), @quantity INT, @expirydate DATETIME, @price DECIMAL(10,2),
+@manufacturer VARCHAR(30),@category VARCHAR(20)
+AS
+BEGIN
+	INSERT INTO Inventory VALUES (@item_id,@name, @quantity, @expirydate, @price,@manufacturer ,@category)
+END
+
+---------------------------------------------
+
+--3-9 ) Shopping : Calculate price of purchasing a certain item 
+
+CREATE PROCEDURE Shopping @id INT , @quantity INT,@total_price DECIMAL(10,2) OUTPUT
+AS
+BEGIN
+	SELECT @total_price = @quantity*price FROM Inventory WHERE supply_id = @id 
+END
+
+---------------------------------------------
+
+--3-10 ) LogActivityDuration : set duration of a current user activity
