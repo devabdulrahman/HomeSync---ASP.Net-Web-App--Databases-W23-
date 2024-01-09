@@ -42,7 +42,6 @@ INSERT INTO Task VALUES ('data entry','11-14-2023','11-16-2023','work',4,'pendin
 INSERT INTO Task VALUES ('start campaign','09-21-2023','10-02-2023','work',2,'in progress',NULL,3);
 INSERT INTO Task VALUES ('paint rooms','12-19-2023','12-24-2023','diy',5,'pending',NULL,1);
 
--- Insert batch #1
 INSERT INTO Notes (user_id, content, creation_date, title) VALUES
 ( 10, 'Discuss plans for the team vacation.', '2024-01-04 05:49:28.210', 'Vacation Planning'),
 ( 9, 'Set personal goals for the month.', '2024-01-04 05:49:28.210', 'Personal Goals'),
@@ -68,3 +67,4 @@ INSERT INTO Communication VALUES
 (8, 5, 'Morning James! Dont forget the deadline is approaching.', '2024-02-18 11:55:00.000', '2024-02-18 11:56:30.000', NULL, 'Deadline Reminder'),
 (10, 7, 'Hello Chloe, need your input on the latest report.', '2024-02-18 16:30:45.000', '2024-02-18 16:31:40.000', NULL, 'Report Feedback'),
 (9, 2, 'Hi John, received your message. Lets catch up later.', '2024-02-18 22:10:08.000', '2024-02-18 22:10:10.000', NULL, 'Acknowledgment');
+

@@ -414,3 +414,153 @@ END
 ---------------------------------------------
 
 --3-10 ) LogActivityDuration : set duration of a current user activity
+
+---------------------------------------------
+
+--3-11 ) TabletConsumption :  Set device consumption for all tablets
+
+CREATE PROCEDURE TabletConsumption @consumption INT
+AS
+BEGIN
+	UPDATE Consumption SET consumption = @consumption FROM Consumption INNER JOIN Device ON Device.device_id = Consumption.device_id WHERE Device.type= 'Tablet' OR Device.type = 'tablet'
+END
+
+--------------------------------------------
+
+--3-12 ) MakeRoomPreferencesTemp : Make preferences for Room temperature to be 30 if a user is older then 40
+
+CREATE PROCEDURE MakePreferncesRoomTemp @user_id INT , @category VARCHAR(20) , @preferences_number INT
+AS
+BEGIN
+	INSERT INTO Preferences (user_id,category,preference_no,content) 
+	SELECT id,@category,@preferences_number,'Set room temp = 30 if user is older than 40 years old' FROM Users WHERE age > 40 AND id = @user_id
+END
+
+--------------------------------------------
+
+--3-13 ) ViewMyLogEntry = View Log entries involving the user
+
+CREATE PROCEDURE ViewMyLogEntry @user_id INT 
+AS
+BEGIN
+	SELECT * FROM Log WHERE user_id = @user_id
+END
+
+--------------------------------------------
+
+--3-14 ) UpdateMyLogEntry = Update Log entries involving the user
+
+CREATE PROCEDURE UpdateMyLogEntry @user_id INT , @room_id INT, @device_id INT,@activity VARCHAR(30)
+AS
+BEGIN
+	UPDATE Log SET room_id=@room_id,device_id=@device_id,activity= @activity WHERE user_id = @user_id
+END
+
+--------------------------------------------
+
+--3-15 ) ViewRoom : View rooms that are not being used 
+
+CREATE PROCEDURE ViewRoom 
+AS
+BEGIN
+	SELECT * FROM Room WHERE status = 'empty'
+END
+
+--------------------------------------------
+
+--3-16 ) ViewMeeting :  View the details of the booked rooms given @user_id and @room_id . (If @room_id is not booked
+--then show all rooms that are booked by this user).
+
+CREATE PROCEDURE ViewMeeting @room_id INT,@user_id INT 
+AS
+BEGIN
+	IF EXISTS (
+        SELECT * 
+        FROM RoomSchedule 
+        WHERE creator_id = @user_id AND room = @room_id 
+    )
+    BEGIN
+        SELECT * FROM RoomSchedule WHERE creator_id = @user_id AND room = @room_id 
+    END
+    ELSE
+    BEGIN
+        SELECT * FROM RoomSchedule WHERE creator_id = @user_id
+    END
+END
+
+---------------------------------------------
+
+--3-17 ) AdminAddTask : Add to the tasks
+
+CREATE PROCEDURE AdminAddTask @user_id INT , @creator INT ,@name VARCHAR(30), @category VARCHAR(20), @priority INT,
+@status VARCHAR(20), @reminder DATETIME , @deadline DATETIME , @other_user VARCHAR(20)
+AS
+BEGIN
+	DECLARE @task INT;
+	BEGIN TRANSACTION;
+	BEGIN TRY
+		INSERT INTO Task VALUES (@name,GETDATE(),@deadline,@category,@creator,@status,@reminder,@priority)
+		SET @task = SCOPE_IDENTITY();
+		INSERT INTO Assigned_to VALUES (@creator,@task,@user_id)
+		IF (@other_user IS NOT NULL)
+		BEGIN 
+			INSERT INTO Assigned_to VALUES (@creator,@task,@other_user)
+		END
+		COMMIT;
+	END TRY
+	BEGIN CATCH
+		ROLLBACK;
+	END CATCH
+END
+
+----------------------------------------------
+
+--3-18 ) AddGuest : Add Guests to the system , generate passwords for them and reserve rooms under their name
+
+CREATE PROCEDURE AddGuest @email VARCHAR(30),@first_name VARCHAR(10),@address VARCHAR(30),@password VARCHAR(30),@guest_of INT , @room_id INT
+AS
+BEGIN
+	DECLARE @lastguest INT;
+	BEGIN TRANSACTION;
+	BEGIN TRY
+		INSERT INTO Users (f_name,password,email,room,type) VALUES (@first_name,@password,@email,@room_id,'guest')
+		SET @lastguest = SCOPE_IDENTITY();
+		INSERT INTO Guest VALUES (@lastguest,@guest_of,@address,NULL,NULL)
+		UPDATE Admin SET no_of_guests_allowed = no_of_guests_allowed+1 WHERE admin_id=@guest_of
+		UPDATE Room SET status = 'occupied' WHERE room_id = @room_id
+		COMMIT;
+	END TRY
+	BEGIN CATCH
+		ROLLBACK;
+	END CATCH
+END
+
+---------------------------------------------
+
+--3-19 ) AssignTask : Assign Task to a specific User
+
+CREATE PROCEDURE AssignTask @user_id INT , @task_id INT , @creator_id INT
+AS
+BEGIN
+	IF EXISTS (SELECT 1 FROM Task WHERE task_id = @task_id AND creator = @creator_id )
+	BEGIN
+		IF NOT EXISTS (SELECT 1 FROM Assigned_to WHERE user_id = @user_id AND task_id = @task_id AND admin_id = @creator_id)
+		BEGIN
+			INSERT INTO Assigned_to VALUES (@creator_id,@task_id,@user_id)
+		END		
+	END
+END
+
+-----------------------------------------------
+
+--3-20 ) DeleteMsg : Delete Last message sent
+
+CREATE PROCEDURE DeleteMsg
+AS
+BEGIN
+	DELETE FROM Communication WHERE time_sent=(SELECT MAX(time_sent) FROM Communication )
+END
+
+-----------------------------------------------
+
+--3-21 ) 

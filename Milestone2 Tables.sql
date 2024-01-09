@@ -9,12 +9,13 @@ CREATE TABLE Room (
 CREATE TABLE Users (
     id INT IDENTITY(1,1) PRIMARY KEY,
 	f_name VARCHAR(20) NOT NULL,
-	l_name VARCHAR(20) NOT NULL,
+	l_name VARCHAR(20) ,
 	password VARCHAR(30) NOT NULL,
 	email VARCHAR(50) NOT NULL,
+	preference VARCHAR(20),
 	room INT,
     type VARCHAR(6),
-    birthdate DATETIME NOT NULL,
+    birthdate DATETIME DEFAULT '01-01-1990' NOT NULL,
     age AS DATEDIFF(YEAR,birthdate,GETDATE()) ,
 	FOREIGN KEY (room) REFERENCES Room(room_id)
   );
