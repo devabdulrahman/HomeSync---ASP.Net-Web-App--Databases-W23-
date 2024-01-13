@@ -63,7 +63,18 @@ GO
 --		given for @age then show details of the room that is assigned to @user_id, if @user_id is also empty then show 
 --		all the details of the room)
 
-
+CREATE PROCEDURE ViewRooms @user_id INT
+AS
+BEGIN
+	IF (@user_id IS NOT NULL )
+	BEGIN
+		SELECT Users.id,Users.f_name,Users.l_name,Room.* FROM Room INNER JOIN Users ON room_id = room WHERE id = @user_id 
+	END 
+	ELSE 
+	BEGIN
+		SELECT Users.id,Users.f_name,Users.l_name,Room.* FROM Room INNER JOIN Users ON room_id = room ORDER BY age DESC
+	END
+END
 
 ---------------------------------------------
 
@@ -415,6 +426,12 @@ END
 
 --3-10 ) LogActivityDuration : set duration of a current user activity
 
+CREATE PROCEDURE LogActivityDuration @room_id INT, @device_id INT , @user_id INT , @date DATETIME
+AS
+BEGIN
+	UPDATE Log SET duration = 1.0 WHERE room_id=@room_id AND device_id=@device_id AND user_id=@user_id AND date = @date AND activity IS NOT NULL
+END
+
 ---------------------------------------------
 
 --3-11 ) TabletConsumption :  Set device consumption for all tablets
@@ -563,4 +580,125 @@ END
 
 -----------------------------------------------
 
---3-21 ) 
+--3-21 ) AddItinerary : Add outgoing flight itinerary for a specific flight.
+
+CREATE PROCEDURE AddItinerary @trip_no INT,@flight_num INT ,@flight_date DATETIME ,@destination VARCHAR(40)
+AS
+BEGIN
+	UPDATE Travel SET outgoing_flight_num=@flight_num , outgoing_flight_date = @flight_date , destination = @destination WHERE trip_no = @trip_no
+END
+
+-----------------------------------------------
+
+--3-22 ) ChangeFlight : Change flight date to next year for all flights in current year 
+
+CREATE PROCEDURE ChangeFlight
+AS
+BEGIN
+	UPDATE Travel SET ingoing_flight_date = DATEADD(YEAR,1,ingoing_flight_date) WHERE YEAR(ingoing_flight_date) = YEAR(GETDATE())
+	UPDATE Travel SET outgoing_flight_date = DATEADD(YEAR,1,outgoing_flight_date) WHERE YEAR(outgoing_flight_date) = YEAR(GETDATE())
+END
+
+----------------------------------------------
+
+--3-23 ) UpdateFlight : Update incoming flights
+
+CREATE PROCEDURE UpdateFlight @date DATETIME ,@destination VARCHAR(15)
+AS
+BEGIN
+	UPDATE Travel SET ingoing_flight_date = @date  WHERE destination = @destination
+END
+
+-----------------------------------------------
+
+--3-24 ) AddDevice : Add a new device
+
+CREATE PROCEDURE AddDevice @device_id INT, @status VARCHAR(20), @battery INT,@location INT, @type VARCHAR(20)
+AS
+BEGIN
+	INSERT INTO Device (device_id,room,type,status,charge) VALUES (@device_id,@location,@type,@status,@battery)
+END
+
+-----------------------------------------------
+
+--3-25 ) OutOfBattery : Find the location of all devices out of battery
+
+CREATE PROCEDURE OutOfBattery
+AS
+BEGIN
+	SELECT room FROM Device WHERE battery_status = 'empty'
+END
+
+------------------------------------------------
+
+--3-26 ) Charging : Set the status of all device out of battery to charging
+
+CREATE PROCEDURE Charging
+AS
+BEGIN
+	UPDATE Device SET status = 'charging' WHERE battery_status = 'empty'
+END
+
+------------------------------------------------
+
+--3-27 ) GuestsAllowed : Set the number of allowed guests for an admin
+
+CREATE PROCEDURE GuestsAllowed @admin_id INT , @number_of_guests INT
+AS
+BEGIN
+	UPDATE Admin SET no_of_guests_allowed = @number_of_guests WHERE admin_id = @admin_id
+END
+
+-------------------------------------------------
+
+--3-28 ) Penalize : Add a penalty for all unpaid transactions where the deadline has passed
+
+CREATE PROCEDURE Penalize @penalty_amount DECIMAL(13,2)
+AS
+BEGIN
+	UPDATE Finance SET penalty = @penalty_amount WHERE status <> 'done' AND deadline < GETDATE() 
+END
+
+------------------------------------------------
+
+--3-29 ) GuestNumber : Get the number of all guests currently present for a certain admin 
+
+CREATE PROCEDURE GuestNumber @admin_id INT
+AS
+BEGIN
+	SELECT COUNT(*) FROM Guest WHERE guest_of = @admin_id
+END
+
+------------------------------------------------
+
+--3-30 ) Youngest : Get the youngest user in the system 
+
+CREATE PROCEDURE Youngest
+AS
+BEGIN
+	SELECT TOP 1 * FROM Users ORDER BY birthdate DESC
+END
+
+------------------------------------------------
+
+--3-31 AveragePayment : Get the users whose average income per month is greater then a specific amount.
+
+CREATE PROCEDURE AveragePayment @amount DECIMAL(10,2)
+AS
+BEGIN
+	SELECT f_name, l_name FROM Users INNER JOIN Admin ON id = admin_id WHERE salary > @amount
+END
+
+-----------------------------------------------
+
+--3-32 ) Purchase : Get the sum of all purchases needed in the home inventory 
+
+CREATE PROCEDURE Purchase
+AS
+BEGIN
+	SELECT SUM(price) FROM Inventory WHERE quantity < 1 
+END
+
+-----------------------------------------------
+
+--3-33 ) NeedCharge : Get the location where more than two devices have a dead battery

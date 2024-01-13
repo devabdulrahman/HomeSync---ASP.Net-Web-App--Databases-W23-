@@ -84,14 +84,14 @@ CREATE TABLE Notes (
 
 CREATE TABLE Travel (
 	trip_no INT IDENTITY (1,1) PRIMARY KEY ,
-	hotel_name VARCHAR (30) NOT NULL,
-	destination VARCHAR (30) NOT NULL,
-	ingoing_flight_num INT NOT NULL,
-	outgoing_flight_num INT NOT NULL,
-	ingoing_flight_date DATETIME NOT NULL,
-	outgoing_flight_date DATETIME NOT NULL,
-	ingoing_flight_airport VARCHAR (30) NOT NULL,
-	outgoing_flight_airport VARCHAR (30) NOT NULL,
+	hotel_name VARCHAR (30) ,
+	destination VARCHAR (30) ,
+	ingoing_flight_num INT ,
+	outgoing_flight_num INT ,
+	ingoing_flight_date DATETIME ,
+	outgoing_flight_date DATETIME ,
+	ingoing_flight_airport VARCHAR (30) ,
+	outgoing_flight_airport VARCHAR (30) ,
 	transport VARCHAR(30)
 );
 
@@ -146,7 +146,7 @@ CREATE TABLE Communication (
 );
 
 CREATE TABLE Device (
-	device_id INT IDENTITY(1,1) PRIMARY KEY,
+	device_id INT PRIMARY KEY,
 	room INT,
 	type VARCHAR(30),
 	status VARCHAR(15),
