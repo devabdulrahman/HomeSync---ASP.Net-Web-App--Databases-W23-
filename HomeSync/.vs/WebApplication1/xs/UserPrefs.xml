@@ -1,20 +1,32 @@
 ﻿<Properties StartupConfiguration="{B7250272-1BCC-4454-A8B0-7D41CBD5B27D}|">
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <Debugger.DebugSourceFolders />
+  <MultiItemStartupConfigurations>
+    <MultiItemSolutionRunConfiguration Id="rnn" Name="rnn">
+      <Items>
+        <StartupItem ItemId="{B7250272-1BCC-4454-A8B0-7D41CBD5B27D}" ItemName="WebApplication1" />
+      </Items>
+    </MultiItemSolutionRunConfiguration>
+  </MultiItemStartupConfigurations>
+  <MonoDevelop.Ide.ItemProperties.WebApplication1 PreferredExecutionTarget="/Applications/Microsoft Edge.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="login.html">
+    <Files>
+      <File FileName="login.html" Line="7" Column="7" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="WebApplication1" expanded="True" selected="True">
-            <Node name="WebApplication1" expanded="True" />
+          <Node name="WebApplication1">
+            <Node name="WebApplication1">
+              <Node name="login.html" selected="True" />
+            </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.WebApplication1 PreferredExecutionTarget="/Applications/Microsoft Edge.app" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
 </Properties>

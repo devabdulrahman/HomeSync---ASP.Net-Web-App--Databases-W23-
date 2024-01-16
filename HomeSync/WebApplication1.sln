@@ -11,15 +11,49 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B7250272-1BCC-4454-A8B0-7D41CBD5B27D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7250272-1BCC-4454-A8B0-7D41CBD5B27D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7250272-1BCC-4454-A8B0-7D41CBD5B27D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7250272-1BCC-4454-A8B0-7D41CBD5B27D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7250272-1BCC-4454-A8B0-7D41CBD5B27D}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{B7250272-1BCC-4454-A8B0-7D41CBD5B27D}.Debug|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {31C5801B-EB30-471E-955E-01C688685CCB}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+		$0.TextStylePolicy = $2
+		$2.FileWidth = 80
+		$2.TabWidth = 8
+		$2.IndentWidth = 8
+		$2.scope = application/x-aspx
+		$0.TextStylePolicy = $3
+		$3.FileWidth = 80
+		$3.TabsToSpaces = True
+		$3.scope = text/plain
+		$0.TextStylePolicy = $4
+		$4.inheritsSet = null
+		$4.scope = text/x-sql
+		$0.TextStylePolicy = $5
+		$5.inheritsSet = null
+		$5.scope = application/config+xml
+		$0.XmlFormattingPolicy = $6
+		$6.inheritsSet = null
+		$6.scope = application/config+xml
+		$0.TextStylePolicy = $7
+		$7.inheritsSet = null
+		$7.scope = application/xml
+		$0.XmlFormattingPolicy = $8
+		$8.scope = application/xml
+		$0.TextStylePolicy = $9
+		$9.inheritsSet = null
+		$9.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $10
+		$10.scope = text/x-csharp
+		$0.StandardHeader = $11
 	EndGlobalSection
 EndGlobal

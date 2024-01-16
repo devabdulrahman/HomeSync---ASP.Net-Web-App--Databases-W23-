@@ -75,7 +75,7 @@ BEGIN
 		SELECT Users.id,Users.f_name,Users.l_name,Room.* FROM Room INNER JOIN Users ON room_id = room ORDER BY age DESC
 	END
 END
-
+GO
 ---------------------------------------------
 
 --2-4 )  ViewMyTask : View their task. (You should check if the deadline has passed or not if it passed set the status to done) .
@@ -257,7 +257,7 @@ GO
 CREATE PROCEDURE ViewRecommendation 
 AS
 BEGIN
-	SELECT name FROM Users WHERE NOT EXISTS (SELECT user_id FROM Recommendation WHERE user_id = Users.id )
+	SELECT f_name,l_name FROM Users WHERE NOT EXISTS (SELECT user_id FROM Recommendation WHERE user_id = Users.id )
 END
 GO
 
@@ -282,7 +282,7 @@ BEGIN
 	INSERT INTO Finance (user_id,type,amount,status,date) 
 	VALUES (@sender_id,@type,@amount,@status,@date)
 END
-
+GO
 
 --------------------------------------------
 
@@ -294,7 +294,7 @@ BEGIN
 	INSERT INTO Finance (user_id,type,amount,status,receiver_id,deadline) 
 	VALUES (@sender_id,@type,@amount,@status,@receiver_id,@deadline)
 END
-
+GO
 --------------------------------------------
 
 --2-19 ) SendMessage : Send message to user
@@ -305,7 +305,7 @@ BEGIN
 	INSERT INTO Communication 
 	VALUES (@sender_id,@receiver_id ,@content,@timesent,@timereceived,NULL,@title)
 END
-
+GO
 -------------------------------------------
 
 --2-20 ) NoteTitle : Change note title for all notes user created
@@ -315,7 +315,7 @@ AS
 BEGIN
 	UPDATE Notes SET title = @note_title WHERE user_id = @user_id	
 END
-
+GO
 -------------------------------------------
 
 --2-21 ) ShowMessages : Show all messages received from a specific user
@@ -325,7 +325,7 @@ AS
 BEGIN
 	SELECT * FROM Communication WHERE receiver_id = @user_id AND sender_id = @sender_id	
 END
-
+GO
 -------------------------------------------
 
 --3-1 ) ViewUsers : See details of all users and filter them by @user_type
@@ -335,7 +335,7 @@ AS
 BEGIN
 	SELECT * FROM Users WHERE  type = @user_type 
 END
-
+GO
 -------------------------------------------
 
 --3-2 ) RemoveEvent : Remove an event from the system
@@ -345,7 +345,7 @@ AS
 BEGIN
 	DELETE FROM Calendar WHERE event_id = @event_id AND user_assigned_to = @user_id 
 END
-
+GO
 --------------------------------------------
 
 --3-3 ) CreateSchedule : Create schedule for the rooms 
@@ -355,7 +355,7 @@ AS
 BEGIN
 	INSERT INTO RoomSchedule VALUES (@creator_id,@action,@room_id,@start_time,@end_time)
 END
-
+GO
 -------------------------------------------
 
 --3-4 ) GuestRemove : Remove a guest from the system
@@ -377,7 +377,7 @@ BEGIN
 		PRINT ERROR_MESSAGE()
 	END CATCH
 END
-
+GO
 --------------------------------------------
 
 --3-5 ) RecommendTD :  Recommend travel destinations for guests under certain age
@@ -399,7 +399,8 @@ CREATE PROCEDURE RoomAvailability @location INT, @status VARCHAR(40)
 AS
 BEGIN
 	UPDATE Room SET status = @status WHERE room_id = @location
-END
+END 
+GO
 
 ---------------------------------------------
 
@@ -410,7 +411,8 @@ CREATE PROCEDURE AddInventory @item_id INT ,@name VARCHAR(30), @quantity INT, @e
 AS
 BEGIN
 	INSERT INTO Inventory VALUES (@item_id,@name, @quantity, @expirydate, @price,@manufacturer ,@category)
-END
+END 
+GO
 
 ---------------------------------------------
 
@@ -420,7 +422,8 @@ CREATE PROCEDURE Shopping @id INT , @quantity INT,@total_price DECIMAL(10,2) OUT
 AS
 BEGIN
 	SELECT @total_price = @quantity*price FROM Inventory WHERE supply_id = @id 
-END
+END 
+GO
 
 ---------------------------------------------
 
@@ -430,7 +433,8 @@ CREATE PROCEDURE LogActivityDuration @room_id INT, @device_id INT , @user_id INT
 AS
 BEGIN
 	UPDATE Log SET duration = 1.0 WHERE room_id=@room_id AND device_id=@device_id AND user_id=@user_id AND date = @date AND activity IS NOT NULL
-END
+END 
+GO
 
 ---------------------------------------------
 
@@ -440,7 +444,8 @@ CREATE PROCEDURE TabletConsumption @consumption INT
 AS
 BEGIN
 	UPDATE Consumption SET consumption = @consumption FROM Consumption INNER JOIN Device ON Device.device_id = Consumption.device_id WHERE Device.type= 'Tablet' OR Device.type = 'tablet'
-END
+END 
+GO
 
 --------------------------------------------
 
@@ -451,7 +456,8 @@ AS
 BEGIN
 	INSERT INTO Preferences (user_id,category,preference_no,content) 
 	SELECT id,@category,@preferences_number,'Set room temp = 30 if user is older than 40 years old' FROM Users WHERE age > 40 AND id = @user_id
-END
+END 
+GO
 
 --------------------------------------------
 
@@ -461,7 +467,8 @@ CREATE PROCEDURE ViewMyLogEntry @user_id INT
 AS
 BEGIN
 	SELECT * FROM Log WHERE user_id = @user_id
-END
+END 
+GO
 
 --------------------------------------------
 
@@ -471,7 +478,8 @@ CREATE PROCEDURE UpdateMyLogEntry @user_id INT , @room_id INT, @device_id INT,@a
 AS
 BEGIN
 	UPDATE Log SET room_id=@room_id,device_id=@device_id,activity= @activity WHERE user_id = @user_id
-END
+END 
+GO
 
 --------------------------------------------
 
@@ -481,7 +489,8 @@ CREATE PROCEDURE ViewRoom
 AS
 BEGIN
 	SELECT * FROM Room WHERE status = 'empty'
-END
+END 
+GO
 
 --------------------------------------------
 
@@ -503,7 +512,8 @@ BEGIN
     BEGIN
         SELECT * FROM RoomSchedule WHERE creator_id = @user_id
     END
-END
+END 
+GO
 
 ---------------------------------------------
 
@@ -528,7 +538,8 @@ BEGIN
 	BEGIN CATCH
 		ROLLBACK;
 	END CATCH
-END
+END 
+GO
 
 ----------------------------------------------
 
@@ -550,7 +561,8 @@ BEGIN
 	BEGIN CATCH
 		ROLLBACK;
 	END CATCH
-END
+END 
+GO
 
 ---------------------------------------------
 
@@ -566,7 +578,8 @@ BEGIN
 			INSERT INTO Assigned_to VALUES (@creator_id,@task_id,@user_id)
 		END		
 	END
-END
+END 
+GO
 
 -----------------------------------------------
 
@@ -576,7 +589,8 @@ CREATE PROCEDURE DeleteMsg
 AS
 BEGIN
 	DELETE FROM Communication WHERE time_sent=(SELECT MAX(time_sent) FROM Communication )
-END
+END 
+GO
 
 -----------------------------------------------
 
@@ -586,7 +600,8 @@ CREATE PROCEDURE AddItinerary @trip_no INT,@flight_num INT ,@flight_date DATETIM
 AS
 BEGIN
 	UPDATE Travel SET outgoing_flight_num=@flight_num , outgoing_flight_date = @flight_date , destination = @destination WHERE trip_no = @trip_no
-END
+END 
+GO
 
 -----------------------------------------------
 
@@ -597,7 +612,8 @@ AS
 BEGIN
 	UPDATE Travel SET ingoing_flight_date = DATEADD(YEAR,1,ingoing_flight_date) WHERE YEAR(ingoing_flight_date) = YEAR(GETDATE())
 	UPDATE Travel SET outgoing_flight_date = DATEADD(YEAR,1,outgoing_flight_date) WHERE YEAR(outgoing_flight_date) = YEAR(GETDATE())
-END
+END 
+GO
 
 ----------------------------------------------
 
@@ -607,7 +623,8 @@ CREATE PROCEDURE UpdateFlight @date DATETIME ,@destination VARCHAR(15)
 AS
 BEGIN
 	UPDATE Travel SET ingoing_flight_date = @date  WHERE destination = @destination
-END
+END 
+GO
 
 -----------------------------------------------
 
@@ -617,7 +634,8 @@ CREATE PROCEDURE AddDevice @device_id INT, @status VARCHAR(20), @battery INT,@lo
 AS
 BEGIN
 	INSERT INTO Device (device_id,room,type,status,charge) VALUES (@device_id,@location,@type,@status,@battery)
-END
+END 
+GO
 
 -----------------------------------------------
 
@@ -627,7 +645,8 @@ CREATE PROCEDURE OutOfBattery
 AS
 BEGIN
 	SELECT room FROM Device WHERE battery_status = 'empty'
-END
+END 
+GO
 
 ------------------------------------------------
 
@@ -637,7 +656,8 @@ CREATE PROCEDURE Charging
 AS
 BEGIN
 	UPDATE Device SET status = 'charging' WHERE battery_status = 'empty'
-END
+END 
+GO
 
 ------------------------------------------------
 
@@ -647,7 +667,8 @@ CREATE PROCEDURE GuestsAllowed @admin_id INT , @number_of_guests INT
 AS
 BEGIN
 	UPDATE Admin SET no_of_guests_allowed = @number_of_guests WHERE admin_id = @admin_id
-END
+END 
+GO
 
 -------------------------------------------------
 
@@ -657,7 +678,8 @@ CREATE PROCEDURE Penalize @penalty_amount DECIMAL(13,2)
 AS
 BEGIN
 	UPDATE Finance SET penalty = @penalty_amount WHERE status <> 'done' AND deadline < GETDATE() 
-END
+END 
+GO
 
 ------------------------------------------------
 
@@ -667,7 +689,8 @@ CREATE PROCEDURE GuestNumber @admin_id INT
 AS
 BEGIN
 	SELECT COUNT(*) FROM Guest WHERE guest_of = @admin_id
-END
+END 
+GO
 
 ------------------------------------------------
 
@@ -677,7 +700,8 @@ CREATE PROCEDURE Youngest
 AS
 BEGIN
 	SELECT TOP 1 * FROM Users ORDER BY birthdate DESC
-END
+END 
+GO
 
 ------------------------------------------------
 
@@ -687,7 +711,8 @@ CREATE PROCEDURE AveragePayment @amount DECIMAL(10,2)
 AS
 BEGIN
 	SELECT f_name, l_name FROM Users INNER JOIN Admin ON id = admin_id WHERE salary > @amount
-END
+END 
+GO
 
 -----------------------------------------------
 
@@ -697,7 +722,8 @@ CREATE PROCEDURE Purchase
 AS
 BEGIN
 	SELECT SUM(price) FROM Inventory WHERE quantity < 1 
-END
+END 
+GO
 
 -----------------------------------------------
 

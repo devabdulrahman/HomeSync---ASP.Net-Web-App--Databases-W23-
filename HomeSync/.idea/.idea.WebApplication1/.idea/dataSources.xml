@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Homesync@localhost" uuid="283576a5-01ff-4bff-8f83-2cc9bc9ceb2a">
-      <driver-ref>sqlserver.ms</driver-ref>
+    <data-source source="LOCAL" name="@localhost" uuid="b1dd65f0-52b8-4899-9577-5fea9dcc1e49">
+      <driver-ref>sqlserver.jb</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
-      <jdbc-url>jdbc:sqlserver://localhost;database=Homesync</jdbc-url>
+      <configured-by-url>true</configured-by-url>
+      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
+      <jdbc-url>Server=localhost</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
